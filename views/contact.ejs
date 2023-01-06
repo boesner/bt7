@@ -1,0 +1,29 @@
+<%- include("header") -%>
+
+
+<%- include("socialicons") -%>
+
+<div>
+  <form class="message" action="https://formsubmit.co/bigtennis@gmail.com" method="POST">
+    <div class="form-group">
+      <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="you" required>
+    </div>
+
+    <div class="form-group">
+      <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="your email" required>
+    </div>
+
+
+    <div class="form-group">
+      <textarea class="form-control" name="message" id="exampleFormControlTextarea1" placeholder="what's on your mind?" required rows="3"></textarea>
+    </div>
+    <br>
+    <input type="text" name="_honey" style="display:none">
+    <input type="hidden" name="_captcha" value="true">
+    <input type="hidden" name="_next" value="https://www.bigtennis.de/thankyou">
+    <button class="btn btn-outline-info" style="float: right" type="submit">Send</button>
+  </form>
+</div>
+
+
+<%- include("footer") -%>

@@ -1,0 +1,91 @@
+<%- include("header") -%>
+
+  <section id="News">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <!--&#127909--> <span class="news-date">2022-12-01 &nbsp</span> Back to the start!
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            After more than a decade in Hamburg we moved our headquarters back to Lingen as currently only Stephan is living in Hamburg. Feels good to be back!
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <!--&#127911--> <span class="news-date">2022-10-03 &nbsp</span> Tommi is back!
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Dancing - with tears in our eyes...(*tears of joy*). Tommi rejoined the band! This comes in handy as he can step in for Johannes who lives in Portugal at the moment. Besides, we are all looking forward to hang together. best dude there is!
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <!--&#128150--> <span class="news-date">2022-08-21 &nbsp </span>Studiotime
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            We just finished recording! We are back from a recording session from Fattoria Musica, Osnabrück.
+            We had a wonderful time. Thank you to everybody who was involved in this, especially Tim, Phil and Benno.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <%- include("socialicons") -%>
+
+  <div id="app">
+    <p class="text-xl-center"> Interested in news, but too laid back to regularly check here? Click below and get our newsletter. </p>
+    <i class="fab fa-mailchimp 2x" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></i>
+  </div>
+
+
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+      <main class="form-signin">
+        <form action="/" method="POST">
+          <i class="fab fa-mailchimp 2x" type="button" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"></i>
+          <!--<img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+          <h1 class="h3 mb-3 fw-normal">Sign up for some BT-intel.</h1>
+
+
+          <div class="form-floating top">
+            <input type="text" class="form-control" id="floatingInput" placeholder="firstName" name="fName" autofocus>
+            <label for="floatingInput">First Name</label>
+          </div>
+          <div class="form-floating middle">
+            <input type="text" class="form-control" id="floatingInput" placeholder="lastName" name="lName">
+            <label for="floatingInput">Last Name</label>
+          </div>
+          <div class="form-floating bottom">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email" required>
+            <label for="floatingInput">Email address</label>
+          </div>
+
+
+          <button class="w-100 btn btn-lg btn-outline-info" type="submit">get newsletter</button>
+
+        </form>
+      </main>
+    </div>
+  </div>
+  </div>
+
+
+<%- include("footer") -%>

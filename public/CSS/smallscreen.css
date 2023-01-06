@@ -1,0 +1,254 @@
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+h1 {
+  text-align: center;
+  font-size: 100px;
+  margin: 600px 0px 50px;
+}
+
+.fadeOnLoad {
+  display: none;
+}
+
+.h3, h3 {
+    font-size: calc(2.5rem + .6vw);
+}
+
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: black;
+}
+
+/*Navigation bar*/
+.nav-link {
+  font-size: 2rem;
+  text-align: right;
+}
+
+.navbar-toggler {
+  font-size:3rem;
+}
+
+.fa-home {
+  font-size:3rem;
+}
+
+.nav-link {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 2.5rem;
+}
+
+/*Classes for social icons*/
+#socialIcons {
+  text-align: center;
+  padding: 3% 15%;
+}
+
+/*.far {
+  padding: 0% 4.5% 1.2%;
+  font-size: 3rem;
+}*/
+
+.fab {
+  margin-left: 45px;
+  margin-right: 45px;
+  font-size: 3rem;
+}
+
+.fab:hover {
+  color: grey;
+}
+
+.social-icons {
+  color: black;
+}
+
+.fab {
+  font-size: 4rem;
+}
+
+/*table for concerts and band*/
+.table {
+  width: 61%;
+  margin: auto ;
+  font-size: 2rem;
+}
+
+.bigtennisare {
+  font-size: 2.5rem;
+  margin-bottom: 60px;
+}
+
+/*props to https: //welearncode.com/rainbow-text/ - coloring of h1*/
+.rainbow-letters {
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+
+.rainbow-letters span:nth-child(10n + 1) {
+  color: #ef5350;
+}
+
+.rainbow-letters span:nth-child(10n + 2) {
+  color: #ab47bc;
+}
+
+.rainbow-letters span:nth-child(10n + 3) {
+  color: #651fff;
+}
+
+.rainbow-letters span:nth-child(10n + 5) {
+  color: #3949ab;
+}
+
+.rainbow-letters span:nth-child(10n + 4) {
+  color: #2196f3;
+}
+
+.rainbow-letters span:nth-child(10n + 6) {
+  color: #00bcd4;
+}
+
+.rainbow-letters span:nth-child(10n + 7) {
+  color: #4caf50;
+}
+
+.rainbow-letters span:nth-child(10n + 8) {
+  color: #ffc107;
+}
+
+.rainbow-letters span:nth-child(10n + 9) {
+  color: #f9a825;
+}
+
+.rainbow-letters span:nth-child(10n + 10) {
+  color: #ff5722;
+}
+
+/*Live-Section*/
+#Live {
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+}
+
+/*News-Section*/
+
+#News {
+  width: 70%;
+  font-size:2.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.news-date {
+  color: #AFAFAF;
+}
+
+.form-floating>.form-control, .form-floating>.form-select {
+    height: calc(6.5rem + 12px);
+    line-height: 1.25;
+    color: grey;
+    font-size: 2rem;
+  }
+
+/*#floatingInput.form-control {
+  font-size: 3.5rem;
+}*/
+
+
+.accordion-button {
+  font-size: 2.5rem;
+}
+
+#app {
+  margin-top: 50px;
+  font-size:2.5rem;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/*footer*/
+.footer {
+  /*position: absolute;
+  bottom: 0;*/
+  width: 100%;
+  font-size: 2.2rem;
+}
+
+.footer2 {
+/*  bottom: 0px;*/
+  width: 100%;
+  font-size: 2rem;
+}*/
+
+
+
+#carouselExampleIndicators {
+  width: 25%;
+  margin: 80px auto 20px;
+}
+
+.disclaimer .disclaimer:hover {
+  background-color: :red;
+}
+
+#Disclaimer {
+  margin-top: 200px;
+  margin:  auto ;
+  width: 80%;
+  font-size:2rem;
+}
+
+.disclaimerLead{
+  font-size: 2rem;
+}
+
+.disclaimer-site {
+  margin-top: 100px;
+}
+
+.imprint {
+  margin-top: 20%;
+  margin-left: -10px;
+}
+
+.message {
+  width: 80%;
+  margin: 40px auto 0 auto;
+  font-style: oblique;
+  color: grey;
+  font-size: 2.5rem;
+  padding-top: auto;
+  padding-bottom: auto;
+}
+
+.form-control {
+  font-size: 2.5rem;
+}
+
+.btn-outline-info {
+  margin-top: 5px;
+  align: right;
+  font-size:1.8rem;
+}
+
+.ThankYou {
+    margin-top: 50px;
+}
+
+.thanks {
+  font-size: 3rem;
+}

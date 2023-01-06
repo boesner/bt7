@@ -1,0 +1,185 @@
+body {
+  padding: 0;
+  text-align: center;
+  margin: auto;
+}
+
+.crunch {
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+h1 {
+  font-size: 80px;
+  margin: 300px 0 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  color: black;
+}
+
+.fadeOnLoad {
+  display: none;
+}
+
+.nav-link {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/*Footer Section*/
+/*footer*/
+.footer {
+  bottom: 0;
+  width: 100%;
+}
+
+/*.footer2 {
+  bottom: 0px;
+  text-align: center;
+  width: 100%;
+}*/
+
+
+
+/*BIG TENNIS HEADING - props to https: //welearncode.com/rainbow-text/ - coloring of h1*/
+.rainbow-letters {
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+
+.rainbow-letters span:nth-child(10n + 1) {
+  color: #ef5350;
+}
+
+.rainbow-letters span:nth-child(10n + 2) {
+  color: #ab47bc;
+}
+
+.rainbow-letters span:nth-child(10n + 3) {
+  color: #651fff;
+}
+
+.rainbow-letters span:nth-child(10n + 5) {
+  color: #3949ab;
+}
+
+.rainbow-letters span:nth-child(10n + 4) {
+  color: #2196f3;
+}
+
+.rainbow-letters span:nth-child(10n + 6) {
+  color: #00bcd4;
+}
+
+.rainbow-letters span:nth-child(10n + 7) {
+  color: #4caf50;
+}
+
+.rainbow-letters span:nth-child(10n + 8) {
+  color: #ffc107;
+}
+
+.rainbow-letters span:nth-child(10n + 9) {
+  color: #f9a825;
+}
+
+.rainbow-letters span:nth-child(10n + 10) {
+  color: #ff5722;
+}
+
+
+/*Classes for social icons*/
+#socialIcons {
+  padding: 3% 15%;
+}
+
+.fab {
+  font-size: 1.5rem;
+  margin: 20px 35px 0 35px;
+}
+
+.fab:hover {
+  color: grey;
+}
+
+.social-icons {
+  color: black;
+}
+
+
+/*news.html -table for concerts and band*/
+.table {
+  width: 40%;
+  margin-top: 20px;
+  margin: auto;
+}
+
+.accordion {
+  margin-top: 50px;
+}
+
+/*Band*/
+.bigtennisare {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+/*BAND - Carousel*/
+#carouselExampleIndicators {
+  width: 25%;
+  margin: 80px auto 20px;
+}
+
+.carouselWidth {
+  width: 30%;
+  margin: auto;
+}
+
+/*Disclaimer*/
+#Disclaimer {
+  width: 60%;
+  margin: auto;
+  text-align: left;
+}
+
+
+/*NEWS-page*/
+#News {
+  width: 50%;
+  margin: 0 auto 0 auto;
+}
+
+.news-date {
+  color: #AFAFAF;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e9ecef;
+}
+
+
+/*Contact-Page*/
+.message {
+  width: 40%;
+  margin: auto;
+}
+
+.input:valid {
+  background-color: #18A558;
+}
+
+.btn-outline-info {
+  margin-top: 5px;
+  margin: auto;
+}
+
+
+/*Thank You Page*/
+.ThankYou {
+  margin-top: 20px;
+}
