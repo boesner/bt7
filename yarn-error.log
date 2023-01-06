@@ -1,0 +1,44 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\jsjanssen\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js init
+
+PATH: 
+  C:\Python310\Scripts\;C:\Python310\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\TortoiseGit\bin;C:\Users\jsjanssen\AppData\Local\Microsoft\WindowsApps;C:\Users\jsjanssen\AppData\Local\Programs\Microsoft VS Code\bin;C:\ProgramData\j.grave\atom\bin;C:\Users\jsjanssen\AppData\Local\Programs\Hyper\resources\bin;C:\Users\jsjanssen\AppData\Roaming\npm;C:\Program Files\heroku\bin;C:\Users\jsjanssen\AppData\Local\Programs\Azure Data Studio\bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.13.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, open 'C:\Users\jsjanssen\Google Drive\Web Development\BigTennisServerFinal\package.json'
+
+npm manifest: 
+  {
+    "name": "bigtennisserver",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Johannes grave",
+    "license": "ISC",
+    "dependencies": {
+      "body-parser": "^1.19.1",
+      "ejs": "^3.1.6",
+      "express": "^4.17.1",
+      "node": "^17.2.0",
+      "nodemon": "^2.0.15",
+      "request": "^2.88.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
