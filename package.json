@@ -2,9 +2,10 @@
   "name": "bigtennisserver",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "master": "app.js",
+  "repository": "https://https://github.com/boesner/bt7",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start: node app.js"
   },
   "author": "Johannes grave",
   "license": "ISC",
