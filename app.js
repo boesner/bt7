@@ -97,7 +97,7 @@ const jsonData = JSON.stringify(data);
 const url = "https://us20.api.mailchimp.com/3.0/lists/c5e61e58d1";
 const options = {
   method: "POST",
-  auth: "boesner:90ca21ccaac6e838beadbdd46dc2bfda-us20"
+  auth: "boesner:9ee3fee7066a913623270abb6e1d6799-us20"
 };
 
 /*mit der node https Request methode schicken wir DAten an den Mailchimp Endpoin*/
