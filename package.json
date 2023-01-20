@@ -5,7 +5,7 @@
   "master": "app.js",
   "repository": "https://https://github.com/boesner/bt7",
   "scripts": {
-    "start: node app.js"
+    "start": "node app.js"
   },
   "author": "Johannes grave",
   "license": "ISC",
