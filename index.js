@@ -23,9 +23,9 @@ $(document).ready(function(){
 });
 
 
-var app = document.getElementById('app');
+/*var app = document.getElementById('app');
 
-/*var typewriter = new Typewriter(app, {
+var typewriter = new Typewriter(app, {
     loop: true
 });
 
