@@ -22,19 +22,3 @@ $(document).ready(function(){
      $("h1").animate({scrollTop: 100000}, 1000);
 });
 
-
-/*var app = document.getElementById('app');
-
-var typewriter = new Typewriter(app, {
-    loop: true
-});
-
-typewriter.typeString('Hello there!')
-    .pauseFor(2500)
-    .deleteAll()
-    .typeString('Interested in BigTennis-News, but too laid back to regularly check this page?')
-    .pauseFor(2500)
-    .deleteChars(7)
-    .typeString('<strong>Get our Newsletter!</strong>')
-    .pauseFor(2500)
-    .start();*/
