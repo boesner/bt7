@@ -11,6 +11,12 @@ h1 {
   margin: 600px 0px 50px;
 }
 
+p {
+  text-align: center;
+  font-size: 60px;
+  margin: 600px 0px 50px;
+}
+
 .fadeOnLoad {
   display: none;
 }
