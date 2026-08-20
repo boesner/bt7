@@ -94,27 +94,54 @@ var data = {
 Das passiert hier (Umwandlung in String im JSON-Format)*/
 const jsonData = JSON.stringify(data);
 
-const url = "https://us20.api.mailchimp.com/3.0/lists/c5e61e58d1";
+/*API-Key, Server-Prefix und Audience-ID kommen aus den Environment-Variablen
+(Render -> Environment). Niemals im Code hinterlegen - geleakte Keys werden
+von Mailchimp automatisch deaktiviert.*/
+const apiKey = process.env.MAILCHIMP_API_KEY;
+const listId = process.env.MAILCHIMP_LIST_ID || "c5e61e58d1";
+const serverPrefix = process.env.MAILCHIMP_SERVER_PREFIX ||
+  (apiKey && apiKey.includes("-") ? apiKey.split("-").pop() : "us20");
+
+if (!apiKey) {
+  console.error("MAILCHIMP_API_KEY is not set");
+  return res.status(500).sendFile(__dirname + "/failureBT.html");
+}
+
+const url = "https://" + serverPrefix + ".api.mailchimp.com/3.0/lists/" + listId;
 const options = {
   method: "POST",
-  auth: "boesner:9ee3fee7066a913623270abb6e1d6799-us20"
+  auth: "anystring:" + apiKey,
+  headers: {
+    "Content-Type": "application/json",
+    "Content-Length": Buffer.byteLength(jsonData)
+  }
 };
 
-/*mit der node https Request methode schicken wir DAten an den Mailchimp Endpoin*/
-const request = https.request(url, options, function(response){
+/*mit der node https Request methode schicken wir Daten an den Mailchimp Endpoint*/
+const mcRequest = https.request(url, options, function(response){
 
-  if (response.statusCode === 200) {
-    res.render("ThankYouNewsletter");
-  } else {
-    res.sendFile(__dirname + "/failureBT.html");
-  }
+  let body = "";
+  response.on("data", function(chunk){
+    body += chunk;
+  });
 
-  response.on("data", function(data){
-    console.log(JSON.parse(data));
+  response.on("end", function(){
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      res.render("ThankYouNewsletter");
+    } else {
+      console.error("Mailchimp error", response.statusCode, body);
+      res.status(502).sendFile(__dirname + "/failureBT.html");
+    }
   });
 });
-request.write(jsonData);
-request.end();
+
+mcRequest.on("error", function(err){
+  console.error("Mailchimp request failed", err);
+  res.status(502).sendFile(__dirname + "/failureBT.html");
+});
+
+mcRequest.write(jsonData);
+mcRequest.end();
 });
 
 /*Failure-routes - completion handler that redirects user to home route */
@@ -122,12 +149,6 @@ app.post("/failure", function(req, res){
   res.redirect("/");
 });
 
-/*Mailchimp API KEY*/
-/*90ca21ccaac6e838beadbdd46dc2bfda-us20*/
-
-
-/*Mailchimp List ID, also referred to as Audience ID*/
-/*c5e61e58d1*/
 
 app.get('/', function(req, res) {
    res.render('index', { });
