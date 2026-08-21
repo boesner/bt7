@@ -1,5 +1,11 @@
 <%- include("header") -%>
 
+<% if (typeof turnstileSiteKey !== "undefined" && turnstileSiteKey) { %>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<% } %>
+
+
+
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GGQKM2LY3Q"></script>
 <script>
@@ -75,8 +81,19 @@
             <label for="floatingInput">Email address</label>
           </div>
 
+          <!-- Spam protection: honeypot (hidden from real users) -->
+          <div style="position:absolute;left:-9999px;top:-9999px;height:0;overflow:hidden;" aria-hidden="true">
+            <label for="website">Leave this field empty</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <!-- Spam protection: Cloudflare Turnstile (non-intrusive) -->
+          <% if (typeof turnstileSiteKey !== "undefined" && turnstileSiteKey) { %>
+            <div class="cf-turnstile" data-sitekey="<%= turnstileSiteKey %>" data-appearance="interaction-only" data-theme="dark"></div>
+          <% } %>
 
           <button class="w-100 btn btn-lg btn-outline-info" type="submit">get newsletter</button>
+
 
         </form>
       </main>
