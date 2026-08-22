@@ -28,7 +28,7 @@ app.get("/", function(req, res){
 });
 
 app.get('/news', function(req, res) {
-  res.render('news');
+  res.render('news', { turnstileSiteKey: TURNSTILE_SITE_KEY });
 });
 
 app.get('/news2', function(req, res) {
@@ -67,8 +67,123 @@ app.get('/ThankYouNewsletter', function(req, res) {
   res.render('ThankYouNewsletter');
 });
 
+/* ---------- Spam-Schutz Helfer (Honeypot / Turnstile / Rate-Limit) ---------- */
+
+const TURNSTILE_SITE_KEY = process.env.TURNSTILE_SITE_KEY || "";
+const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY || "";
+
+/*Render laeuft hinter einem Proxy - echte Client-IP steht in x-forwarded-for.*/
+function getClientIp(req) {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (forwarded) {
+    return String(forwarded).split(",")[0].trim();
+  }
+  return req.ip || (req.connection && req.connection.remoteAddress) || "unknown";
+}
+
+/*Leichtgewichtiges In-Memory-Rate-Limit: max. 5 Versuche pro IP in 10 Minuten.
+Keine Datenbank, kein externer Dienst.*/
+const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const rateLimitHits = new Map();
+
+function allowRequest(ip) {
+  const now = Date.now();
+  for (const [key, hits] of rateLimitHits) {
+    const fresh = hits.filter(function(t){ return now - t < RATE_LIMIT_WINDOW_MS; });
+    if (fresh.length === 0) {
+      rateLimitHits.delete(key);
+    } else {
+      rateLimitHits.set(key, fresh);
+    }
+  }
+  const current = rateLimitHits.get(ip) || [];
+  if (current.length >= RATE_LIMIT_MAX) {
+    return false;
+  }
+  current.push(now);
+  rateLimitHits.set(ip, current);
+  return true;
+}
+
+/*Turnstile-Token serverseitig bei Cloudflare verifizieren.*/
+function verifyTurnstile(token, ip, callback) {
+  if (!TURNSTILE_SECRET_KEY) {
+    /*Nicht konfiguriert (z.B. lokal) - Formular bleibt nutzbar.*/
+    console.warn("TURNSTILE_SECRET_KEY is not set - skipping Turnstile verification");
+    return callback(true);
+  }
+  if (!token) {
+    return callback(false);
+  }
+
+  const payload = new URLSearchParams({
+    secret: TURNSTILE_SECRET_KEY,
+    response: token,
+    remoteip: ip
+  }).toString();
+
+  const verifyRequest = https.request("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Length": Buffer.byteLength(payload)
+    }
+  }, function(response){
+    let body = "";
+    response.on("data", function(chunk){ body += chunk; });
+    response.on("end", function(){
+      try {
+        const result = JSON.parse(body);
+        if (!result.success) {
+          console.warn("Turnstile rejected token", result["error-codes"]);
+        }
+        callback(result.success === true);
+      } catch (err) {
+        console.error("Turnstile response could not be parsed", err, body);
+        callback(false);
+      }
+    });
+  });
+
+  verifyRequest.on("error", function(err){
+    console.error("Turnstile verification failed", err);
+    callback(false);
+  });
+
+  verifyRequest.write(payload);
+  verifyRequest.end();
+}
+
 /*posten der Inputinhalte zum Server, hinterlegen in Constants*/
+
 app.post("/", function(req, res) {
+
+  /*Spam-Schutz 1: Honeypot. Bots fuellen dieses unsichtbare Feld aus.
+  In dem Fall tun wir so, als waere alles ok - ohne Mailchimp zu rufen.*/
+  if (req.body.website) {
+    console.warn("Newsletter signup blocked: honeypot filled");
+    return res.render("ThankYouNewsletter");
+  }
+
+  /*Spam-Schutz 2: einfaches In-Memory-Rate-Limit pro IP.*/
+  if (!allowRequest(getClientIp(req))) {
+    console.warn("Newsletter signup blocked: rate limit");
+    return res.status(429).sendFile(__dirname + "/failureBT.html");
+  }
+
+  /*Spam-Schutz 3: Cloudflare Turnstile serverseitig pruefen.
+  Erst danach wird Mailchimp aufgerufen.*/
+  verifyTurnstile(req.body["cf-turnstile-response"], getClientIp(req), function(ok) {
+    if (!ok) {
+      console.warn("Newsletter signup blocked: Turnstile verification failed");
+      return res.status(400).sendFile(__dirname + "/failureBT.html");
+    }
+    subscribeToMailchimp();
+  });
+
+  function subscribeToMailchimp() {
+
   const firstName = req.body.fName;
   const lastName = req.body.lName;
   const email = req.body.email;
@@ -142,7 +257,9 @@ mcRequest.on("error", function(err){
 
 mcRequest.write(jsonData);
 mcRequest.end();
+}
 });
+
 
 /*Failure-routes - completion handler that redirects user to home route */
 app.post("/failure", function(req, res){
