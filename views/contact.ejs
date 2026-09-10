@@ -4,7 +4,7 @@
 <%- include("socialicons") -%>
 
 <div>
-  <form class="message" action="https://formsubmit.co/bigtennis@gmail.com" method="POST">
+  <form class="message" action="/contact" method="POST">
     <div class="form-group">
       <input type="text" name="name" class="form-control" id="exampleFormControlInput1" placeholder="you" required>
     </div>
@@ -18,9 +18,7 @@
       <textarea class="form-control" name="message" id="exampleFormControlTextarea1" placeholder="what's on your mind?" required rows="3"></textarea>
     </div>
     <br>
-    <input type="text" name="_honey" style="display:none">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://www.bigtennis.de/thankyou">
+    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
     <button class="btn btn-outline-info" style="float: right" type="submit">Send</button>
   </form>
 </div>
