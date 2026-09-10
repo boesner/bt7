@@ -261,6 +261,94 @@ mcRequest.end();
 });
 
 
+/* ---------- Kontaktformular: serverseitiger Mailversand ueber Resend ---------- */
+
+app.post("/contact", function(req, res) {
+
+  /*Spam-Schutz 1: Honeypot. Bots fuellen dieses unsichtbare Feld aus.*/
+  if (req.body.website) {
+    console.warn("Contact form blocked: honeypot filled");
+    return res.redirect("/ThankYou");
+  }
+
+  /*Spam-Schutz 2: gleiches In-Memory-Rate-Limit wie beim Newsletter.*/
+  if (!allowRequest(getClientIp(req))) {
+    console.warn("Contact form blocked: rate limit");
+    return res.status(429).sendFile(__dirname + "/failureBT.html");
+  }
+
+  const name = String(req.body.name || "").trim();
+  const email = String(req.body.email || "").trim();
+  const message = String(req.body.message || "").trim();
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  if (!name || !email || !message || !emailOk ||
+      name.length > 200 || email.length > 200 || message.length > 5000) {
+    console.warn("Contact form blocked: invalid input");
+    return res.status(400).sendFile(__dirname + "/failureBT.html");
+  }
+
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    console.error("RESEND_API_KEY is not set");
+    return res.status(500).sendFile(__dirname + "/failureBT.html");
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .split("&").join("&amp;")
+      .split("\u003c").join("&lt;")
+      .split("\u003e").join("&gt;")
+      .split('"').join("&quot;");
+  }
+
+  const textBody = "Name: " + name + "\nEmail: " + email + "\n\nMessage:\n" + message;
+  const htmlBody = "<p><strong>Name:</strong> " + escapeHtml(name) + "</p>" +
+    "<p><strong>Email:</strong> " + escapeHtml(email) + "</p>" +
+    "<p><strong>Message:</strong><br>" + escapeHtml(message).split("\n").join("<br>") + "</p>";
+
+  const payload = JSON.stringify({
+    from: "BIGTENNIS Website <booking@bigtennis.de>",
+    to: ["bigtennis@gmail.com"],
+    reply_to: email,
+    subject: "Contact form message from " + name,
+    text: textBody,
+    html: htmlBody
+  });
+
+  const options = {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + resendApiKey,
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(payload)
+    }
+  };
+
+  const resendRequest = https.request("https://api.resend.com/emails", options, function(response){
+    let body = "";
+    response.on("data", function(chunk){ body += chunk; });
+    response.on("end", function(){
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        console.log("Contact email delivered to bigtennis@gmail.com", body);
+        return res.redirect("/ThankYou");
+      }
+      console.error("Resend error", response.statusCode, body);
+      return res.status(502).sendFile(__dirname + "/failureBT.html");
+    });
+  });
+
+  resendRequest.on("error", function(err){
+    console.error("Resend request failed", err);
+    return res.status(502).sendFile(__dirname + "/failureBT.html");
+  });
+
+  resendRequest.write(payload);
+  resendRequest.end();
+});
+
+
 /*Failure-routes - completion handler that redirects user to home route */
 app.post("/failure", function(req, res){
   res.redirect("/");
