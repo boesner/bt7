@@ -3,6 +3,7 @@
 const express = require("express");
 const request = require("request");
 const https = require("https");
+const crypto = require("crypto");
 const bodyParser= require ("body-parser");
 
 const app = express();
@@ -39,8 +40,34 @@ app.get('/test', function(req, res) {
   res.render('test');
 });
 
+/* Zeitstempel-Token fuer das Kontaktformular (Spam-Schutz).
+   Beim Laden der Seite wird die Serverzeit HMAC-signiert ins Formular gelegt.
+   Beim Absenden pruefen wir Signatur und vergangene Zeit serverseitig, damit
+   Bots weder den Zeitstempel faelschen noch die Seite ueberspringen koennen. */
+const FORM_TOKEN_KEY = crypto.randomBytes(32);
+const FORM_MIN_SECONDS = 3;
+const FORM_MAX_AGE_SECONDS = 24 * 60 * 60;
+
+function createFormToken() {
+  const ts = String(Date.now());
+  const sig = crypto.createHmac("sha256", FORM_TOKEN_KEY).update(ts).digest("hex");
+  return ts + "." + sig;
+}
+
+/* Liefert "ok", "too_fast" oder "invalid". */
+function checkFormToken(token) {
+  const parts = String(token || "").split(".");
+  if (parts.length !== 2 || !/^\d+$/.test(parts[0]) || !/^[0-9a-f]{64}$/.test(parts[1])) return "invalid";
+  const expected = crypto.createHmac("sha256", FORM_TOKEN_KEY).update(parts[0]).digest();
+  if (!crypto.timingSafeEqual(expected, Buffer.from(parts[1], "hex"))) return "invalid";
+  const elapsed = (Date.now() - Number(parts[0])) / 1000;
+  if (elapsed < FORM_MIN_SECONDS) return "too_fast";
+  if (elapsed > FORM_MAX_AGE_SECONDS) return "invalid";
+  return "ok";
+}
+
 app.get('/contact', function(req, res) {
-  res.render('contact');
+  res.render('contact', { formToken: createFormToken(), formError: req.query.error === "1" });
 });
 
 app.get('/band', function(req, res) {
@@ -267,8 +294,17 @@ app.post("/contact", function(req, res) {
 
   /*Spam-Schutz 1: Honeypot. Bots fuellen dieses unsichtbare Feld aus.*/
   if (req.body.website) {
-    console.warn("Contact form blocked: honeypot filled");
+    console.warn("Contact form blocked: bot/spam traffic (honeypot filled) from " + getClientIp(req));
     return res.redirect("/ThankYou");
+  }
+
+  /*Spam-Schutz 1b: Mindest-Ausfuellzeit (3 s) ueber signierten Zeitstempel.
+    Gilt auch fuer direkte POST-Aufrufe ohne Seitenaufruf (kein gueltiges Token).
+    Der Nutzer sieht nur eine allgemeine Fehlermeldung.*/
+  const tokenStatus = checkFormToken(req.body.form_token);
+  if (tokenStatus !== "ok") {
+    console.warn("Contact form blocked: bot/spam traffic (timing " + tokenStatus + ") from " + getClientIp(req));
+    return res.redirect("/contact?error=1");
   }
 
   /*Spam-Schutz 2: gleiches In-Memory-Rate-Limit wie beim Newsletter.*/
